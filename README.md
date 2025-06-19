@@ -6,7 +6,7 @@ used as a base (it's also the one where the AI tries to find faces) and a png, w
 exaple overlay (I made a wasted filter inspired by GTAIV with photoshop). It's imporant the
 overlay is a png if you are working with transparency.
 
-The pre-trained AI Haares Cascades might not be the most accurate one, but it's easier to work 
+The pre-trained AI model might not be the most accurate one, but it's easier to work 
 with. This specific AI is trained on data to look for human faces, so do not be surprised if it
 doesn't work for animals etc. IF you want to change that, you can also use another model.
 

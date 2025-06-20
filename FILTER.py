@@ -17,11 +17,18 @@ faces = face_cascade.detectMultiScale(gray, scaleFactor=1.1, minNeighbors=5)
 input_pil = Image.fromarray(cv2.cvtColor(cv_image, cv2.COLOR_BGR2RGB)) 
 overlay = Image.open(overlay_path).convert("RGBA")
 
-# Now we paste the overlay on each detected face
-# We get the coordinates of each face and resize the overlay for each one
-# Then we paste the overlay on the input image
+# Pixels of the input image faces are loaded so that we can make the black/white
+pixels = input_pil.load()
 
 for (x, y, w, h) in faces: 
+
+    # Lets make the faces black/white so that it looks like in GTAV
+    for i in range(x, x + w):
+        for j in range(y, y + h):
+                if 0 <= i < input_pil.width and 0 <= j < input_pil.height:
+                  r, g, b = pixels[i, j]
+                  gray = int(0.299 * r + 0.587 * g + 0.114 * b) # Standard formula for colour->grayscale
+                  pixels[i, j] = (gray, gray, gray)
 
     center_x = x + w // 2 # We center the overlay horizontally over the face
     eye_y = y + h // 3  # Eye level 2/3 of the head (at least what my drawing teacher said) (we go from top to bottom so //3)
@@ -31,7 +38,7 @@ for (x, y, w, h) in faces:
     new_y = eye_y - new_h // 2
 
     resized_overlay = overlay.resize((new_w, new_h)) # Overlay is scaled to 120% width and 90% height of the face box
-    input_pil.paste(resized_overlay, (new_x, new_y), resized_overlay)
+    input_pil.paste(resized_overlay, (new_x, new_y), resized_overlay) # Then we paste the overlay on the input image
 
 # Now we save the image with the overlays applied
 output_path = "output.jpg" 
